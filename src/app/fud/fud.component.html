@@ -1,0 +1,409 @@
+<div class="wrapper">
+    <div class="form-container">
+        <form [formGroup]="formData" (submit)="test()">
+            <div class="form-header">
+                <div class="row-1">
+                    <h2>REGISTRO NACIONAL DE VÍCTIMAS</h2>
+                </div>
+            </div>
+            <div class="alert alert-success" role="alert" *ngIf="showAlert">
+                {{message}}
+            </div>
+            <h2 class="title">FORMATO ÚNICO DE DECLARACIÓN </h2>
+            <label class="subtitule" style="padding-left: 25px;">Ingrese los datos que se piden a continuación, en caso
+                de desconocer algúno de ellos, escriba "Desconocido"
+            </label>
+            <label style="font-size: 10px; color: red; padding-left: 25px;">
+                campos obligatorios *
+            </label>
+            <mat-vertical-stepper headerPosition="bottom" #stepper>
+                <mat-step>
+                    <label>Lugar de la denuncia *</label>
+                    <input class="form-input" type="text" placeholder="Lugar"
+                        [formControl]="$any(formData).get('solicitude.place')">
+                    <br>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Fecha de la solicitud*</mat-label>
+                        <input matInput [matDatepicker]="picker" [formControl]="$any(formData).get('solicitude.date')">
+                        <mat-hint>MM/DD/YYYY</mat-hint>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                    <ng-template matStepLabel>Lugar y fecha de la solicitud</ng-template>
+                    <div>
+                        <button type="button" type="button" mat-button matStepperNext
+                            [disabled]="!$any(formData).get('solicitude').valid">Siguiente</button>
+                    </div>
+                </mat-step>
+                <mat-step>
+                    <label class="subtitle">La presente solicitud se reliza por *: </label>
+                    <mat-radio-group aria-label="Select an option" formControlName="writtenBy">
+                        <mat-radio-button value="victima"><strong>VICTIMA</strong> Directa, indirecta o Potencial
+                        </mat-radio-button>
+                        <mat-radio-button value="familia">Victima a través de familiar o persona de confianza
+                        </mat-radio-button>
+                        <mat-radio-button value="servidor">Servidor/a público/a o autoridad</mat-radio-button>
+                        <mat-radio-button value="representante">Representante legal</mat-radio-button>
+                    </mat-radio-group>
+                    <div class="personal-details"
+                        *ngIf="(formData.value.writtenBy == 'familia' || formData.value.writtenBy == 'servidor')">
+                        <label class="subtitle"> I. DATOS DEL/LA SOLICITANTE </label>
+                        <label>Nombre (s)</label>
+                        <input class="form-input" type="text" [formControl]="$any(formData).get('applicantData.name')">
+                        <label>Primer apellido</label>
+                        <input class="form-input" type="text"
+                            [formControl]="$any(formData).get('applicantData.lastName')">
+                        <label>Segundo apellido</label>
+                        <input class="form-input" type="text"
+                            [formControl]="$any(formData).get('applicantData.motherLastName')">
+                        <label *ngIf="formData.value.writtenBy == 'familia'">Parentesco/relación afectiva*</label>
+                        <input class="form-input" *ngIf="formData.value.writtenBy == 'familia'" type="text"
+                            [formControl]="$any(formData).get('applicantData.relationship')">
+                        <label *ngIf="formData.value.writtenBy == 'servidor'">Cargo**</label>
+                        <input class="form-input" *ngIf="formData.value.writtenBy == 'servidor'" type="text"
+                            [formControl]="$any(formData).get('applicantData.position')">
+                        <label *ngIf="formData.value.writtenBy == 'servidor'">Dependencia o institución**</label>
+                        <input class="form-input" *ngIf="formData.value.writtenBy == 'servidor'" type="text"
+                            [formControl]="$any(formData).get('applicantData.institution')">
+                        <label>Teléfono móvil</label>
+                        <input class="form-input" type="text"
+                            [formControl]="$any(formData).get('applicantData.mobilePhone')">
+                        <label>Teléfono fijo</label>
+                        <input class="form-input" type="text" [formControl]="$any(formData).get('applicantData.phone')">
+                        <label>Correo electronico</label>
+                        <input class="form-input" type="text" [formControl]="$any(formData).get('applicantData.email')">
+                        <label>Otros datos de contacto</label>
+                        <input class="form-input" type="text"
+                            [formControl]="$any(formData).get('applicantData.contact')">
+                    </div>
+                    <div class="personal-details" *ngIf="true">
+                        <label class="subtitle"> II. DATOS DEL/LA VÍCTIMA </label>
+                        <mat-radio-group aria-label="Select an option" formControlName="victimType">
+                            <mat-radio-button value="Directa">Directa</mat-radio-button>
+                            <mat-radio-button value="Indirecta">Indirecta</mat-radio-button>
+                            <mat-radio-button value="Potencial">Potencial</mat-radio-button>
+                        </mat-radio-group>
+                        <label>Nombre (s)*</label>
+                        <input class="form-input" type="text" [formControl]="$any(formData).get('victimData.name')">
+                        <label>Primer apellido*</label>
+                        <input class="form-input" type="text" [formControl]="$any(formData).get('victimData.lastName')">
+                        <label>Segundo apellido*</label>
+                        <input class="form-input" type="text"
+                            [formControl]="$any(formData).get('victimData.motherLastName')">
+                        <label>Fecha de nacimiento*</label>
+                        <input class="form-input" type="text"
+                            [formControl]="$any(formData).get('victimData.birthDate')">
+                        <label>Sexo*</label>
+                        <mat-radio-group aria-label="Select an option"
+                            [formControl]="$any(formData).get('victimData.gender')">
+                            <mat-radio-button value="Hombre">Hombre</mat-radio-button>
+                            <mat-radio-button value="Mujer">Mujer</mat-radio-button>
+                            <mat-radio-button value="Otro">Otro</mat-radio-button>
+                        </mat-radio-group>
+                        <label>Nacionalidad*</label>
+                        <input class="form-input" type="text"
+                            [formControl]="$any(formData).get('victimData.nationality')">
+                        <label>CURP*</label>
+                        <input class="form-input" type="text" [formControl]="$any(formData).get('victimData.curp')">
+                        <label>Lugar de nacimiento*</label>
+                        <input class="form-input" type="text"
+                            [formControl]="$any(formData).get('victimData.birthPlace')">
+                        <label>Estado Civil*</label>
+                        <mat-radio-group aria-label="Select an option"
+                            [formControl]="$any(formData).get('victimData.civilStatus')">
+                            <mat-radio-button value="Soltero">Soltero</mat-radio-button>
+                            <mat-radio-button value="Casado/a">Casado/a</mat-radio-button>
+                            <mat-radio-button value="Divorciado/a">Divorciado/a</mat-radio-button>
+                            <mat-radio-button value="Viudo/a">Viudo/a</mat-radio-button>
+                            <mat-radio-button value="Unión libre">Unión libre</mat-radio-button>
+                            <mat-radio-button value="Concubinato">Concubinato</mat-radio-button>
+                            <mat-radio-button value="Separado/a">Separado/a</mat-radio-button>
+                            <mat-radio-button value="2"></mat-radio-button>
+                        </mat-radio-group>
+                        <label>Calle*</label>
+                        <input class="form-input" type="text" [formControl]="$any(formData).get('victimData.street')">
+                        <label>Numero exterior*</label>
+                        <input class="form-input" type="text"
+                            [formControl]="$any(formData).get('victimData.externalNumber')">
+                        <label>Numero interior*</label>
+                        <input class="form-input" type="text"
+                            [formControl]="$any(formData).get('victimData.internalNumber')">
+                        <label>Código postal*</label>
+                        <input class="form-input" type="text"
+                            [formControl]="$any(formData).get('victimData.postalCode')">
+                        <label>Colonia*</label>
+                        <input class="form-input" type="text" [formControl]="$any(formData).get('victimData.colony')">
+                        <label>Localidad*</label>
+                        <input class="form-input" type="text" [formControl]="$any(formData).get('victimData.location')">
+                        <label>Delegación o municipio*</label>
+                        <input class="form-input" type="text"
+                            [formControl]="$any(formData).get('victimData.delegation')">
+                        <label>Entidad federativa*</label>
+                        <input class="form-input" type="text"
+                            [formControl]="$any(formData).get('victimData.federalEntity')">
+                        <label>Teléfono*</label>
+                        <input class="form-input" type="text" [formControl]="$any(formData).get('victimData.phone')">
+                    </div>
+                    <ng-template matStepLabel>Datos del solicitante y la víctima*</ng-template>
+                    <div>
+                        <button type="button" mat-button matStepperNext
+                            [disabled]="!$any(formData).get('victimData').valid">Siguiente</button>
+                    </div>
+                </mat-step>
+                <!-- <mat-step>
+                    <label> III. RELACIÓN DE LA VÍCTIMA INDIRECTA CON LA VÍCTIMA DIRECTA </label>
+                    <table class="table">
+                        <tr>
+                            <td>En caso de ser víctima indirecta, proporcione el nombre completo de la víctima directa
+                            </td>
+                            <td>Relción con la vícitma directa. Conteste ¿Qué soy de la víctima directa?</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                    <ng-template matStepLabel>RELACIÓN DE LA VÍCTIMA INDIRECTA CON LA DIRECTA</ng-template>
+                    <div>
+                        <button mat-button matStepperNext>Siguiente</button>
+                    </div>
+                </mat-step> -->
+                <mat-step>
+                    <div class="victimId">
+                        <p>
+                            Se deberá anexar al presente Formato, copia de la
+                            identificación de la víctima. En caso de manifestar no
+                            contar con ella en este momento, la identificación
+                            deberá ser remitida a la Comisión Ejecutiva de
+                            Atención a Víctimas con posterioridad
+                        </p>
+                        <label class="subtitle">III. ¿Presenta identificación?*</label>
+                        <mat-radio-group aria-label="Select an option" [(ngModel)]="hasId"
+                            [ngModelOptions]="{standalone: true}">
+                            <mat-radio-button [value]="true">Si</mat-radio-button>
+                            <mat-radio-button [value]="false">No</mat-radio-button>
+                        </mat-radio-group>
+                        <mat-radio-group aria-label="Select an option" formControlName="idType" *ngIf="hasId">
+                            <mat-radio-button value="Cartilla del servicio militar">Cartilla del servicio militar
+                            </mat-radio-button>
+                            <mat-radio-button value="Pasaporte">Pasaporte</mat-radio-button>
+                            <mat-radio-button value="Cedula profesional">Cedula profesional</mat-radio-button>
+                            <mat-radio-button value="Credencial oficial expedida por el IMSS o ISSSTE">Credencial
+                                oficial expedida por el IMSS o ISSSTE</mat-radio-button>
+                            <mat-radio-button value="Certificado o constancia de estudios">Certificado o constancia de
+                                estudios</mat-radio-button>
+                            <mat-radio-button value="Constancia de residencia expedida por autoridad local">Constancia
+                                de residencia expedida por autoridad local</mat-radio-button>
+                            <mat-radio-button value="Tarjeta de residencia temporal">Tarjeta de residencia temporal
+                            </mat-radio-button>
+                            <mat-radio-button value="Tarjeta de residencia permanente">Tarjeta de residencia permanente
+                            </mat-radio-button>
+                            <mat-radio-button value="Credencial de elector">Credencial de elector</mat-radio-button>
+                            <mat-radio-button value="Otro documento oficial">Otro documento oficial</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                    <ng-template matStepLabel>Identificación</ng-template>
+                    <div>
+                        <button type="button" mat-button matStepperNext>Siguiente</button>
+                    </div>
+                </mat-step>
+                <mat-step>
+                    <label class="subtitle">IV. LUGAR Y FECHA DE LOS HECHOS</label>
+                    <label>Calle*</label>
+                    <input class="form-input" type="text" [formControl]="$any(formData).get('fact.street')">
+                    <label>Numero exterior*</label>
+                    <input class="form-input" type="text" [formControl]="$any(formData).get('fact.externalNumber')">
+                    <label>Código postal*</label>
+                    <input class="form-input" type="text" [formControl]="$any(formData).get('fact.postalCode')">
+                    <label>Colonia*</label>
+                    <input class="form-input" type="text" [formControl]="$any(formData).get('fact.colony')">
+                    <label>Localidad*</label>
+                    <input class="form-input" type="text" [formControl]="$any(formData).get('fact.location')">
+                    <label>Delegación o municipio*</label>
+                    <input class="form-input" type="text" [formControl]="$any(formData).get('fact.delegation')">
+                    <label>Entidad federativa*</label>
+                    <mat-radio-group aria-label="Select an option"
+                        [formControl]="$any(formData).get('fact.federalEntity')">
+                        <mat-radio-button *ngFor="let entity of federalEntities" [value]="entity">{{entity}}</mat-radio-button>
+                    </mat-radio-group>
+                    <p>
+                        En caso de no conocer todos los datos sobre el
+                        lugar donde ocurrieron los hechos victimizantes,
+                        favor de proporcionar los que conozca y utilice esta
+                        casilla para agregar otros datos de ubicación
+                    </p>
+                    <textarea [formControl]="$any(formData).get('fact.extraInformation')" cols="60" rows="5"></textarea>
+                    <label>RELATO DE LOS HECHOS</label>
+                    <p>
+                        Por favor relate las circunstancias de modo, tiempo y lugar, antes, durante y después de los
+                        hechos victimizantes. En caso de contar con alguna constancia
+                        o documento ministerial, jurisdiccional o de organismos nacionales o internacionales de derechos
+                        humanos en donde se dé cuenta del mismo, anexarlo al
+                        presente formato. En caso de que los hechos victimizantes atenten contra derechos colectivos,
+                        favor de referirlo. F
+                    </p>
+                    <textarea [formControl]="$any(formData).get('fact.report')" cols="60" rows="5"></textarea>
+                    <ng-template matStepLabel>LUGAR Y FECHA DE LOS HECHOS</ng-template>
+                    <div>
+                        <button type="button" mat-button matStepperNext>Siguiente</button>
+                    </div>
+                </mat-step>
+                <mat-step>
+                    <label class="subtitle">V. OBSERVACIONES PRELIMINARES DE/LA SERVIDOR/A PÚBLICO/A O AUTORIDAD QUE
+                        LLENA EL
+                        FORMATO</label>
+                    <label>Tipo de daño sufrido</label>
+                    <mat-radio-group aria-label="Select an option"
+                        [formControl]="$any(formData).get('observations.violenceType')">
+                        <mat-radio-button value="Físico">Físico</mat-radio-button>
+                        <mat-radio-button value="Psicológico">Psicológico</mat-radio-button>
+                        <mat-radio-button value="Patrimonial">Patrimonial</mat-radio-button>
+                        <mat-radio-button value="Sexual">Sexual</mat-radio-button>
+                        <mat-radio-button value="Otro">Otro</mat-radio-button>
+                    </mat-radio-group>
+                    <label>Este campo es para uso exclusivo de las autoridades en el caso de que participen con la
+                        víctima en el llenado del FUD:</label>
+                    <textarea [formControl]="$any(formData).get('observations.description')"></textarea>
+                    <ng-template matStepLabel>OBSERVACIONES PRELIMINARES</ng-template>
+                    <div>
+                        <button type="button" mat-button matStepperNext>Siguiente</button>
+                    </div>
+                </mat-step>
+                <mat-step>
+                    <label class="subtitle">VI. AUTORIDADES QUE HAN CONOCIDO DE LOS HECHOS</label>
+                    <label>INVESTIGACIÓN MINISTERIAL</label>
+                    <label>¿Denunció ante el Ministerio Público?</label>
+                    <mat-radio-group aria-label="Select an option" [(ngModel)]="denouncedtoMinistery"
+                        [ngModelOptions]="{standalone: true}">
+                        <mat-radio-button [value]="true">Si</mat-radio-button>
+                        <mat-radio-button [value]="false">No</mat-radio-button>
+                    </mat-radio-group>
+                    <div *ngIf="denouncedtoMinistery" class="juditial-process">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Choose a date</mat-label>
+                            <input matInput [matDatepicker]="picker"
+                                [formControl]="$any(formData).get('ministerialInvestigation.date')">
+                            <mat-hint>MM/DD/YYYY</mat-hint>
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                        <label>Competencia</label>
+                        <mat-radio-group aria-label="Select an option"
+                            [formControl]="$any(formData).get('ministerialInvestigation.competence')">
+                            <mat-radio-button value="Federal">Federal</mat-radio-button>
+                            <mat-radio-button value="Local">Local</mat-radio-button>
+                        </mat-radio-group>
+                        <label>Entidad federativa</label>
+                        <input class="form-input" type="text"
+                            [formControl]="$any(formData).get('ministerialInvestigation.federalEntity')">
+                        <label>Delito</label>
+                        <input class="form-input" type="text"
+                            [formControl]="$any(formData).get('ministerialInvestigation.crime')">
+                        <label>Agecia MP*</label>
+                        <input class="form-input" type="text"
+                            [formControl]="$any(formData).get('ministerialInvestigation.agency')">
+                        <label>A. P./C.I./A.C.**</label>
+                        <input class="form-input" type="text"
+                            [formControl]="$any(formData).get('ministerialInvestigation.apciac')">
+                        <label>Estado de la investigación</label>
+                        <input class="form-input" type="text"
+                            [formControl]="$any(formData).get('ministerialInvestigation.investigationStatus')">
+                    </div>
+                    <label>PROCESO JUDICIAL</label>
+                    <label>Fecha de inicio del proceso judicial</label>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Choose a date</mat-label>
+                        <input matInput [matDatepicker]="picker2"
+                            [formControl]="$any(formData).get('judicialProcess.date')">
+                        <mat-hint>MM/DD/YYYY</mat-hint>
+                        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                        <mat-datepicker #picker2></mat-datepicker>
+                    </mat-form-field>
+                    <label>Competencia</label>
+                    <mat-radio-group aria-label="Select an option"
+                        [formControl]="$any(formData).get('judicialProcess.competence')">
+                        <mat-radio-button value="Federal">Federal</mat-radio-button>
+                        <mat-radio-button value="Local">Local</mat-radio-button>
+                    </mat-radio-group>
+                    <label>Entidad federativa</label>
+                    <input class="form-input" type="text"
+                        [formControl]="$any(formData).get('judicialProcess.federalEntity')">
+                    <label>Delito</label>
+                    <input class="form-input" type="text" [formControl]="$any(formData).get('judicialProcess.crime')">
+                    <label>Número de juzgado</label>
+                    <input class="form-input" type="text"
+                        [formControl]="$any(formData).get('judicialProcess.courtNumber')">
+                    <label>Numero de proceso</label>
+                    <input class="form-input" type="text"
+                        [formControl]="$any(formData).get('judicialProcess.processNumber')">
+                    <label>Estado del proceso judicial</label>
+                    <input class="form-input" type="text"
+                        [formControl]="$any(formData).get('judicialProcess.stateJudicialProcess')">
+                    <label>PROCEDIMIENTOS ANTE ORGANISMOS NACIONALES E INTERNACIONALES DE DERECHOS HUMANOS</label>
+                    <label>¿Presentó queja, petición u otro tipo de solicitud ante organismo de DD. HH.?</label>
+                    <mat-radio-group aria-label="Select an option" [(ngModel)]="hasComplainedToHumanRights"
+                        [ngModelOptions]="{standalone: true}">
+                        <mat-radio-button [value]="true">Sí</mat-radio-button>
+                        <mat-radio-button [value]="false">No</mat-radio-button>
+                    </mat-radio-group>
+                    <div class="" *ngIf="hasComplainedToHumanRights">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Choose a date</mat-label>
+                            <input matInput [matDatepicker]="picker3"
+                                [formControl]="$any(formData).get('humanRightsProcess.date')">
+                            <mat-hint>MM/DD/YYYY</mat-hint>
+                            <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                            <mat-datepicker #picker3></mat-datepicker>
+                        </mat-form-field>
+                        <label>Competencia</label>
+                        <mat-radio-group aria-label="Select an option"
+                            [formControl]="$any(formData).get('humanRightsProcess.competence')">
+                            <mat-radio-button value="1">Federal</mat-radio-button>
+                            <mat-radio-button value="2">Local</mat-radio-button>
+                            <mat-radio-button value="2">Internacional</mat-radio-button>
+                        </mat-radio-group>
+                        <label>Organismo</label>
+                        <input class="form-input" type="text"
+                            [formControl]="$any(formData).get('humanRightsProcess.organism')">
+                        <label>Violación a DD. HH.</label>
+                        <input class="form-input" type="text"
+                            [formControl]="$any(formData).get('humanRightsProcess.violation')">
+                        <label>Autoridad responsable</label>
+                        <input class="form-input" type="text"
+                            [formControl]="$any(formData).get('humanRightsProcess.authority')">
+                        <label>Tipo de resolución</label>
+                        <mat-radio-group aria-label="Select an option"
+                            [formControl]="$any(formData).get('humanRightsProcess.resolutionType')">
+                            <mat-radio-button value="1">Recomendación</mat-radio-button>
+                            <mat-radio-button value="2">Conciliación</mat-radio-button>
+                            <mat-radio-button value="2">Medidas precautorias</mat-radio-button>
+                            <mat-radio-button value="2">Otra</mat-radio-button>
+                        </mat-radio-group>
+                        <label>Folio</label>
+                        <input class="form-input" type="text"
+                            [formControl]="$any(formData).get('humanRightsProcess.invoice')">
+                        <label>Estado actual</label>
+                        <input class="form-input" type="text"
+                            [formControl]="$any(formData).get('humanRightsProcess.currentState')">
+                        <label>OTRA AUTORIDAD</label>
+                        <input class="form-input" type="text"
+                            [formControl]="$any(formData).get('humanRightsProcess.otherAuthority')">
+                    </div>
+                    <ng-template matStepLabel>Autoridades</ng-template>
+                    <div>
+                        <button type="submit">Enviar</button>
+
+                    </div>
+                </mat-step>
+            </mat-vertical-stepper>
+        </form>
+    </div>
+</div>

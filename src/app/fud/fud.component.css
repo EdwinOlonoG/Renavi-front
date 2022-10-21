@@ -1,0 +1,100 @@
+.wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.form-container {
+    display: flex;
+    width: 100%;
+}
+
+.form-header {
+    
+    color: white;
+}
+
+.row-1 {
+    background-color: var(--black-background);
+    height: 80px;
+    padding-top: 25px;
+    text-align: center;
+}
+
+label {
+    display: block;
+}
+
+mat-radio-group {
+    margin: 40px 0px 40px 0px;
+   
+}
+
+mat-radio-button {
+    display: block;
+    font-size: 16px;
+    margin: 10px 0px 10px 0px;
+}
+
+.form-input {
+    width: 30%;
+    height: 35px;
+    border-radius: 5px;
+    border: solid 1px rgb(235, 229, 229);
+    padding-left: 15px;
+    margin-right: 20px;
+    font-size: 14px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+button {
+    background-color: rgb(103, 27, 173);
+    color: white;
+    width: 100px;
+    height: 35px;
+    border: none;
+    margin-top: 25px;
+}
+button:disabled {
+    background-color: rgb(163, 109, 214);
+}
+
+.subtitle {
+    font-size: 18px;
+    margin: 20px 0px 20px 0px;
+}
+
+.form-label {
+    font-size: 12px;
+}
+
+.table {
+    width: 50%;
+    border-color: rgb(219, 219, 219);
+}
+
+td {
+    border: solid 1px gainsboro;
+    height: 50px;
+}
+
+.title {
+    padding: 25px;
+}
+
+mat-vertical-stepper {
+    width: 90%;
+    background-color: rgb(250, 250, 250);
+}
+.alert{
+    width: 100%;
+    height: 80px;
+    display: grid;
+    place-content: center;
+    font-size: 28px;
+    position: fixed;
+    top: 15;
+    background-color: rgb(47, 148, 86);
+    color: white;
+    z-index: 2;
+}
